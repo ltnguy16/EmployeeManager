@@ -1,0 +1,46 @@
+﻿@model List<EmployeeManager.Models.Domain.Employee>
+@{
+
+}
+
+<h1>Employees</h1>
+@using (Html.BeginForm("Index", "Employees", FormMethod.Get))
+{
+    <p>
+        Find by Last Name: @Html.TextBox("SearchString")  
+        <input type="submit" value="Filter" />
+    </p>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.FirstNameParm })</th>
+            <th>Middle Name</th>
+            <th>@Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameParm })</th>
+            <th>Address</th>
+            <th>Date of Birth</th>
+            <th>SSN</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.FirstName</td>
+                <td>@employee.MiddleName</td>
+                <td>@employee.LastName</td>
+                <td>@employee.Address</td>
+                <td>@employee.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                <td>@employee.SocialSecurityNumber</td>
+                <td><a href="Employees/Edit/@employee.Id">Edit</a></td>
+                <td>|</td>
+                <td><a href="Employees/Delete/@employee.Id"> Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
