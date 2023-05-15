@@ -4,21 +4,25 @@
 }
 
 <h1>Employees</h1>
+
 @using (Html.BeginForm("Index", "Employees", FormMethod.Get))
 {
     <p>
         Find by Last Name: @Html.TextBox("SearchString")  
-        <input type="submit" value="Filter" />
+        <input type="submit" value="Filter"/>
+        <a href="Employees/Add/" class="btn-outline">Add Employee</a>
     </p>
 }
-
-
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.FirstNameParm })</th>
+            <th>
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.FirstNameParm })">First Name</a>
+            </th>
             <th>Middle Name</th>
-            <th>@Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameParm })</th>
+            <th>
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.LastNameParm })">Last Name</a>
+            </th>
             <th>Address</th>
             <th>Date of Birth</th>
             <th>SSN</th>
@@ -39,7 +43,7 @@
                 <td>@employee.SocialSecurityNumber</td>
                 <td><a href="Employees/Edit/@employee.Id">Edit</a></td>
                 <td>|</td>
-                <td><a href="Employees/Delete/@employee.Id"> Delete</a></td>
+                <td><a href="Employees/Delete/@employee.Id">Delete</a></td>
             </tr>
         }
     </tbody>

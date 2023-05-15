@@ -3,6 +3,7 @@ using EmployeeManager.Models;
 using EmployeeManager.Models.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace EmployeeManager.Controllers
 {
@@ -16,12 +17,9 @@ namespace EmployeeManager.Controllers
 
         [HttpGet]
         public IActionResult Index(string sortOrder, string searchString)
-        {
-            //var employee = await _employeeContext.Employees.ToListAsync();
-            
+        {            
             ViewBag.FirstNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "first_asc") ? "first_desc" : "first_asc";
             ViewBag.LastNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "last_asc") ? "last_desc" : "last_asc";
-            
 
             var employees = from s in _employeeContext.Employees
                            select s;
@@ -79,8 +77,13 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
             var employee = await _employeeContext.Employees.FirstOrDefaultAsync(x =>x.Id == id);
             if(employee == null)
             {
@@ -121,13 +124,14 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
-            var employee = await _employeeContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
-            if (employee == null)
+            if(id == null)
             {
-                return RedirectToAction("Index");
+                return BadRequest();
             }
+
+            var employee = await _employeeContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
 
             var selectedEmployee = new UpdateEmployeeViewModel()
             {
