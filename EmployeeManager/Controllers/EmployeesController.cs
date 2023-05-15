@@ -59,13 +59,14 @@ namespace EmployeeManager.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddEmployeeViewModel addEmployeeRequest) 
         {
+
             var employee = new Employee()
             {
                 Id = Guid.NewGuid(),
-                FirstName = addEmployeeRequest.FirstName.Trim(),
-                MiddleName = addEmployeeRequest.MiddleName.Trim(),
-                LastName = addEmployeeRequest.LastName.Trim(),
-                Address = addEmployeeRequest.Address.Trim(),
+                FirstName = addEmployeeRequest.FirstName,
+                MiddleName = addEmployeeRequest.MiddleName,
+                LastName = addEmployeeRequest.LastName,
+                Address = addEmployeeRequest.Address,
                 DateOfBirth = addEmployeeRequest.DateOfBirth,
                 SocialSecurityNumber = addEmployeeRequest.SocialSecurityNumber,
                 DateCreated = DateTime.Now,

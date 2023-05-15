@@ -10,29 +10,29 @@
 <form method="post" action="Add" class="mt-5">
     <div class="mb-3">
         <label for="" class="form-label">First Name</label>
-        <input type="text" class="form-control" asp-for="FirstName">
+        <input type="text" id="firstN" class="form-control" asp-for="FirstName">
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Middle Name</label>
-        <input type="text" class="form-control" asp-for="MiddleName">
+        <input type="text" id="middleN" class="form-control" asp-for="MiddleName">
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Last Name</label>
-        <input type="text" class="form-control" asp-for="LastName">
+        <input type="text" id="lastN" class="form-control" asp-for="LastName">
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Address</label>
-        <input type="text" class="form-control" asp-for="Address">
+        <input type="text" id="address" class="form-control" asp-for="Address">
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Date of Birth</label>
-        <input type="date" class="form-control" asp-for="DateOfBirth">
+        <input type="date" id="dob" class="form-control" asp-for="DateOfBirth">
     </div>
     <div class="mb-3">
         <label for="" class="form-label">SSN</label>
         <input type="text" id="ssn" class="form-control" asp-for="SocialSecurityNumber" />
     </div>
-    <button type="submit" class="btn btn-primary"">Submit</button>
+    <button type="submit" class="btn btn-primary" onclick="return requiredField()">Submit</button>
     <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-outline-primary">Back to Index</a>
 </form>
 
@@ -59,8 +59,36 @@
     }
 
     function requiredField(){
-        if (ssn.value.length < 11)
-            alert("Incorrect SSN format\nPlease use the correct format ###-##-###")
-            event.preventDefault() 
+        var errorString = ""
+        alert(document.getElementById('dob').value)
+        if (document.getElementById('firstN').value == "") {
+            errorString += "First Name can't be blank"
+        }
+        if (document.getElementById('middleN').value == "") {
+            errorString += (errorString != "") ? "\n" : ""
+            errorString += "Middle Name can't be blank"
+        }
+        if (document.getElementById('lastN').value == "") {
+            errorString += (errorString != "") ? "\n" : ""
+            errorString += "Last Name can't be blank"
+        }
+        if (document.getElementById('address').value == "") {
+            errorString += (errorString != "") ? "\n" : ""
+            errorString += "Address can't be blank"
+        }
+        if (document.getElementById('dob').value == "") {
+            errorString += (errorString != "") ? "\n" : ""
+            errorString += "Date of Birth can't be blank"
+        }
+        if (ssn.value.length < 11){
+            errorString += (errorString != "") ? "\n" : ""
+            errorString += "Incorrect SSN format. Please use the correct format ###-##-###"
+        }
+        
+        if (errorString != ""){
+            alert(errorString)
+            event.preventDefault()
+        }
+        
     }
 </script>
