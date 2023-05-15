@@ -17,11 +17,11 @@
     <thead>
         <tr>
             <th>
-                <a href="@Url.Action("Index", new { sortOrder = ViewBag.FirstNameParm })">First Name</a>
+                @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.FirstNameParm })
             </th>
             <th>Middle Name</th>
             <th>
-                <a href="@Url.Action("Index", new { sortOrder = ViewBag.LastNameParm })">Last Name</a>
+                @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameParm })
             </th>
             <th>Address</th>
             <th>Date of Birth</th>
