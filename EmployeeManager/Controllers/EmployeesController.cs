@@ -17,7 +17,10 @@ namespace EmployeeManager.Controllers
 
         [HttpGet]
         public IActionResult Index(string sortOrder, string searchString)
-        {            
+        {   
+            IDictionary<string, int>
+
+
             ViewBag.FirstNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "first_asc") ? "first_desc" : "first_asc";
             ViewBag.LastNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "last_asc") ? "last_desc" : "last_asc";
             ViewBag.MiddleNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "mid_asc") ? "mid_desc" : "mid_asc";
@@ -60,16 +63,16 @@ namespace EmployeeManager.Controllers
                     employees = employees.OrderBy(x => x.Address);
                     break;
                 case "dob_desc":
-                    employees = employees.OrderByDescending(x => x.Address);
+                    employees = employees.OrderByDescending(x => x.DateOfBirth);
                     break;
                 case "dob_asc":
-                    employees = employees.OrderBy(x => x.Address);
+                    employees = employees.OrderBy(x => x.DateOfBirth);
                     break;
                 case "ssn_desc":
-                    employees = employees.OrderByDescending(x => x.Address);
+                    employees = employees.OrderByDescending(x => x.SocialSecurityNumber);
                     break;
                 case "ssn_asc":
-                    employees = employees.OrderBy(x => x.Address);
+                    employees = employees.OrderBy(x => x.SocialSecurityNumber);
                     break;
                 default:
                     break;
