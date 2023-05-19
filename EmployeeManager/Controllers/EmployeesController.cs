@@ -3,6 +3,7 @@ using EmployeeManager.Models;
 using EmployeeManager.Models.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Net;
 
 namespace EmployeeManager.Controllers
@@ -34,9 +35,6 @@ namespace EmployeeManager.Controllers
         
         private IQueryable<Employee> _sortHelper(string sortOrder, IQueryable<Employee> employees)
         {
-            /*
-                Figure out a way cleaner way to do these checks
-             */
             var newEmployees = employees;
 
             ViewBag.FirstNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "first_asc") ? "first_desc" : "first_asc";
@@ -46,47 +44,24 @@ namespace EmployeeManager.Controllers
             ViewBag.DOBParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "dob_asc") ? "dob_desc" : "dob_asc";
             ViewBag.SSNParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "ssn_asc") ? "ssn_desc" : "ssn_asc";
 
-            switch (sortOrder)
+            var orderCommands = new Dictionary<string, Action>()
             {
-                case "first_desc":
-                    newEmployees = employees.OrderByDescending(x => x.FirstName);
-                    break;
-                case "first_asc":
-                    newEmployees = employees.OrderBy(x => x.FirstName);
-                    break;
-                case "last_desc":
-                    newEmployees = employees.OrderByDescending(x => x.LastName);
-                    break;
-                case "last_asc":
-                    newEmployees = employees.OrderBy(x => x.LastName);
-                    break;
-                case "mid_desc":
-                    newEmployees = employees.OrderByDescending(x => x.MiddleName);
-                    break;
-                case "mid_asc":
-                    newEmployees = employees.OrderBy(x => x.MiddleName);
-                    break;
-                case "add_desc":
-                    newEmployees = employees.OrderByDescending(x => x.Address);
-                    break;
-                case "add_asc":
-                    newEmployees = employees.OrderBy(x => x.Address);
-                    break;
-                case "dob_desc":
-                    newEmployees = employees.OrderByDescending(x => x.DateOfBirth);
-                    break;
-                case "dob_asc":
-                    newEmployees = employees.OrderBy(x => x.DateOfBirth);
-                    break;
-                case "ssn_desc":
-                    newEmployees = employees.OrderByDescending(x => x.SocialSecurityNumber);
-                    break;
-                case "ssn_asc":
-                    newEmployees = employees.OrderBy(x => x.SocialSecurityNumber);
-                    break;
-                default:
-                    break;
-            }
+                { "first_desc", () => newEmployees = employees.OrderByDescending(x => x.FirstName)},
+                { "first_asc", () => newEmployees = employees.OrderBy(x => x.FirstName)},
+                { "last_desc", () => newEmployees = employees.OrderByDescending(x => x.LastName) },
+                { "last_asc", () => newEmployees = employees.OrderBy(x => x.LastName)},
+                { "mid_desc", () => newEmployees = employees.OrderByDescending(x => x.MiddleName)},
+                { "mid_asc", () => newEmployees = employees.OrderBy(x => x.MiddleName)},
+                { "add_desc", () => newEmployees = employees.OrderByDescending(x => x.Address)},
+                { "add_asc", () => newEmployees = employees.OrderBy(x => x.Address)},
+                { "dob_desc", () => newEmployees = employees.OrderByDescending(x => x.DateOfBirth)},
+                { "dob_asc", () => newEmployees = employees.OrderBy(x => x.DateOfBirth)},
+                { "ssn_desc", () => newEmployees = employees.OrderByDescending(x => x.SocialSecurityNumber)},
+                { "ssn_asc", () => newEmployees = employees.OrderBy(x => x.SocialSecurityNumber)}
+            };
+
+            if (!sortOrder.IsNullOrEmpty() && orderCommands.ContainsKey(sortOrder))
+                orderCommands[sortOrder].Invoke();
 
             return newEmployees;
         }
