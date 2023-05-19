@@ -19,13 +19,21 @@
             <th>
                 @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.FirstNameParm })
             </th>
-            <th>Middle Name</th>
+            <th>
+                @Html.ActionLink("Middle Name", "Index", new {sortOrder = ViewBag.MiddleNameParm})
+            </th>
             <th>
                 @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameParm })
             </th>
-            <th>Address</th>
-            <th>Date of Birth</th>
-            <th>SSN</th>
+            <th>
+                @Html.ActionLink("Address", "Index", new { sortOrder = ViewBag.AddressParm })
+            </th>
+            <th>
+                @Html.ActionLink("Date of Birth", "Index", new { sortOrder = ViewBag.DOBParm })
+            </th>
+            <th>
+                @Html.ActionLink("SSN", "Index", new { sortOrder = ViewBag.SSNParm })
+            </th>
             <th></th>
             <th></th>
             <th></th>

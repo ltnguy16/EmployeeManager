@@ -20,6 +20,10 @@ namespace EmployeeManager.Controllers
         {            
             ViewBag.FirstNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "first_asc") ? "first_desc" : "first_asc";
             ViewBag.LastNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "last_asc") ? "last_desc" : "last_asc";
+            ViewBag.MiddleNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "mid_asc") ? "mid_desc" : "mid_asc";
+            ViewBag.AddressParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "add_asc") ? "add_desc" : "add_asc";
+            ViewBag.DOBParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "dob_asc") ? "dob_desc" : "dob_asc";
+            ViewBag.SSNParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "ssn_asc") ? "ssn_desc" : "ssn_asc";
 
             var employees = from s in _employeeContext.Employees
                            select s;
@@ -42,6 +46,30 @@ namespace EmployeeManager.Controllers
                     break;
                 case "last_asc":
                     employees = employees.OrderBy(x => x.LastName);
+                    break;
+                case "mid_desc":
+                    employees = employees.OrderByDescending(x => x.MiddleName);
+                    break;
+                case "mid_asc":
+                    employees = employees.OrderBy(x => x.MiddleName);
+                    break;
+                case "add_desc":
+                    employees = employees.OrderByDescending(x => x.Address);
+                    break;
+                case "add_asc":
+                    employees = employees.OrderBy(x => x.Address);
+                    break;
+                case "dob_desc":
+                    employees = employees.OrderByDescending(x => x.Address);
+                    break;
+                case "dob_asc":
+                    employees = employees.OrderBy(x => x.Address);
+                    break;
+                case "ssn_desc":
+                    employees = employees.OrderByDescending(x => x.Address);
+                    break;
+                case "ssn_asc":
+                    employees = employees.OrderBy(x => x.Address);
                     break;
                 default:
                     break;
