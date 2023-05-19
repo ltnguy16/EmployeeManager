@@ -32,6 +32,9 @@
         <label for="" class="form-label">SSN</label>
         <input type="text" id="ssn" class="form-control" asp-for="SocialSecurityNumber" />
     </div>
+    <div>
+        <h2 id="test">test</h2>
+    </div>
     <button type="submit" class="btn btn-primary" onclick="return requiredField()">Submit</button>
     <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-outline-primary">Back to Index</a>
 </form>
@@ -45,18 +48,33 @@
     ssn.addEventListener('input', ssnFormatHelper, false);
     var previouslength = 0
 
-    function ssnFormatHelper(){
-        if (ssn.value.length >= 11){
-            ssn.value = ssn.value.substr(0, 11);
+    function ssnFormatHelper() {
+        var val = this.value.replace(/\D/g, '');
+        var newVal = '';
+
+        if (val.length > 9) {
+            val = val.substr(0, 9)
         }
-        if (ssn.value.length == 3 && previouslength <= ssn.value.length) {
-            ssn.value += '-';
+        
+        if (val.length > 4) {
+            this.value = val;
         }
-        else if (ssn.value.length == 6 && previouslength <= ssn.value.length) {
-            ssn.value += '-';
+
+        if ((val.length > 3) && (val.length < 6)) {
+            newVal += val.substr(0, 3) + '-';
+            val = val.substr(3);
         }
-        previouslength = ssn.value.length
-    }
+
+        if (val.length > 5) {
+            newVal += val.substr(0, 3) + '-';
+            newVal += val.substr(3, 2) + '-';
+            val = val.substr(5);
+        }
+        
+        newVal += val;
+        this.value = newVal;
+    };
+
 
     function requiredField(){
         var errorString = ""

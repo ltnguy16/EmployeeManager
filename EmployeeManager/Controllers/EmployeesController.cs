@@ -18,8 +18,26 @@ namespace EmployeeManager.Controllers
         [HttpGet]
         public IActionResult Index(string sortOrder, string searchString)
         {   
-            IDictionary<string, int>
 
+            var employees = from s in _employeeContext.Employees
+                           select s;
+
+            employees = _sortHelper(sortOrder, employees);
+
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                employees = employees.Where(s => s.LastName.Contains(searchString));
+            }
+
+            return View(employees.ToList());
+        }
+        
+        private IQueryable<Employee> _sortHelper(string sortOrder, IQueryable<Employee> employees)
+        {
+            /*
+                Figure out a way cleaner way to do these checks
+             */
+            var newEmployees = employees;
 
             ViewBag.FirstNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "first_asc") ? "first_desc" : "first_asc";
             ViewBag.LastNameParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "last_asc") ? "last_desc" : "last_asc";
@@ -28,59 +46,51 @@ namespace EmployeeManager.Controllers
             ViewBag.DOBParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "dob_asc") ? "dob_desc" : "dob_asc";
             ViewBag.SSNParm = (String.IsNullOrEmpty(sortOrder) || sortOrder == "ssn_asc") ? "ssn_desc" : "ssn_asc";
 
-            var employees = from s in _employeeContext.Employees
-                           select s;
-
-            if(!String.IsNullOrEmpty(searchString))
-            {
-                employees = employees.Where(s => s.LastName.Contains(searchString));
-            }
-
-            switch(sortOrder)
+            switch (sortOrder)
             {
                 case "first_desc":
-                    employees = employees.OrderByDescending(x => x.FirstName);
+                    newEmployees = employees.OrderByDescending(x => x.FirstName);
                     break;
                 case "first_asc":
-                    employees = employees.OrderBy(x => x.FirstName); 
+                    newEmployees = employees.OrderBy(x => x.FirstName);
                     break;
                 case "last_desc":
-                    employees = employees.OrderByDescending(x => x.LastName);
+                    newEmployees = employees.OrderByDescending(x => x.LastName);
                     break;
                 case "last_asc":
-                    employees = employees.OrderBy(x => x.LastName);
+                    newEmployees = employees.OrderBy(x => x.LastName);
                     break;
                 case "mid_desc":
-                    employees = employees.OrderByDescending(x => x.MiddleName);
+                    newEmployees = employees.OrderByDescending(x => x.MiddleName);
                     break;
                 case "mid_asc":
-                    employees = employees.OrderBy(x => x.MiddleName);
+                    newEmployees = employees.OrderBy(x => x.MiddleName);
                     break;
                 case "add_desc":
-                    employees = employees.OrderByDescending(x => x.Address);
+                    newEmployees = employees.OrderByDescending(x => x.Address);
                     break;
                 case "add_asc":
-                    employees = employees.OrderBy(x => x.Address);
+                    newEmployees = employees.OrderBy(x => x.Address);
                     break;
                 case "dob_desc":
-                    employees = employees.OrderByDescending(x => x.DateOfBirth);
+                    newEmployees = employees.OrderByDescending(x => x.DateOfBirth);
                     break;
                 case "dob_asc":
-                    employees = employees.OrderBy(x => x.DateOfBirth);
+                    newEmployees = employees.OrderBy(x => x.DateOfBirth);
                     break;
                 case "ssn_desc":
-                    employees = employees.OrderByDescending(x => x.SocialSecurityNumber);
+                    newEmployees = employees.OrderByDescending(x => x.SocialSecurityNumber);
                     break;
                 case "ssn_asc":
-                    employees = employees.OrderBy(x => x.SocialSecurityNumber);
+                    newEmployees = employees.OrderBy(x => x.SocialSecurityNumber);
                     break;
                 default:
                     break;
             }
 
-            return View(employees.ToList());
+            return newEmployees;
         }
-        
+
         [HttpGet]
         public IActionResult Add()
         {
